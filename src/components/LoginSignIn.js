@@ -3,6 +3,8 @@ import Header from './Header'
 import {checkValidData} from '../utils/validate'
 import { createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth";
 import {auth} from '../utils/firebase'
+import {useNavigate } from 'react-router-dom'
+
 
 export const LoginSignIn = () => {
     const [isSigninForm,setIsSigninForm] = useState(false);
@@ -11,6 +13,8 @@ export const LoginSignIn = () => {
     // const name = useRef(null)
     const email = useRef(null);
     const password = useRef(null);
+    const displayName = useRef('User');
+    const navigate = useNavigate();
     const handleButtonClicked = ()=>{
     //Validate the Form
     const message = checkValidData(email.current.value,password.current.value);
@@ -28,6 +32,7 @@ export const LoginSignIn = () => {
           // Signed in 
           const user = userCredential.user;
           console.log(user);
+          navigate('/browse');
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -46,6 +51,7 @@ export const LoginSignIn = () => {
           const user = userCredential.user;
           console.log(user);
           setErrorMessage('SignUp Successfully')
+          navigate('/browse');
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -68,7 +74,8 @@ export const LoginSignIn = () => {
         md:w-4/12 md:h-[650px] md:ml-[500px] md:mt-[40px] md: bg-opacity-90  md:rounded-lg'> 
         <form className='my-36 p-5 md:my-10 md:p-10 '  onSubmit={(e)=> e.preventDefault()}>
             <h1 className='text-3xl font-bold'>{isSigninForm ? 'Sign Up':'Login'}</h1>
-            {isSigninForm  &&(<input className='w-full h-14 mt-8 rounded-md bg-gray-800 text-center'  type='text' placeholder='Name' 
+            {isSigninForm  &&(<input className='w-full h-14 mt-8 rounded-md bg-gray-800 text-center'  type='text' placeholder='Name'
+              useRef={displayName} 
             />)}
             <input className='w-full h-14 mt-8 rounded-md bg-gray-800 text-center'  type='text' placeholder='Email' 
             ref={email}/>
